@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -13,16 +14,8 @@ public class Post {
     private String body;
     private Date createdOn;
 
-    public Date getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "author_id")
     private Author author;
 
     public Post() {}
@@ -55,12 +48,32 @@ public class Post {
         this.body = body;
     }
 
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
     public Author getAuthor() {
         return author;
     }
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post )) return false;
+        return id != null && id.equals(((Post) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
     }
 
 }

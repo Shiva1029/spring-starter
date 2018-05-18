@@ -27,19 +27,19 @@ public class HomeController {
         return "";
     }
 
-    @PostMapping("/addPost/{authorId}")
-    public String add(@RequestBody Post post, @RequestParam(name = "authorId") BigInteger authorId) {
+    @PostMapping("/addAuthor")
+    public String add(@RequestBody Author author) {
+        this.authorService.addAuthor(author);
+        return "Success";
+    }
+
+    @RequestMapping("/addPost/{authorId}")
+    public String add(@RequestBody Post post, @PathVariable(name = "authorId") BigInteger authorId) {
         Author author = this.authorService.getAuthor(authorId);
         // TODO: if(author == null) {}
         post.setAuthor(author);
         post.setCreatedOn(new Date());
         this.postService.addPost(post);
-        return "Success";
-    }
-
-    @PostMapping("/addAuthor")
-    public String add(@RequestBody Author author) {
-        this.authorService.addAuthor(author);
         return "Success";
     }
 
@@ -54,7 +54,7 @@ public class HomeController {
     }
 
     @GetMapping("/posts/{authorName}")
-    public List<Post> posts(@RequestParam(name = "authorName") String authorName) {
+    public List<Post> posts(@PathVariable(name = "authorName") String authorName) {
         return this.postService.getAuthorPosts(authorName);
     }
 }
