@@ -1,6 +1,7 @@
 package com.example.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,5 +39,9 @@ class ApiError {
 
     public HttpStatus getStatus() {
         return status;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

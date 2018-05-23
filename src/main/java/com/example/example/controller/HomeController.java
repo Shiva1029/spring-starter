@@ -7,6 +7,7 @@ import com.example.example.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -45,16 +46,31 @@ public class HomeController {
 
     @GetMapping("/authors")
     public List<Author> authors() {
-        return this.authorService.getAuthors();
+        List<Author> authors = this.authorService.getAuthors();
+        if(authors == null || authors.size() == 0) {
+            throw new EntityNotFoundException();
+        } else {
+            return authors;
+        }
     }
 
     @GetMapping("/posts")
     public List<Post> posts() {
-        return this.postService.getPosts();
+        List<Post> posts = this.postService.getPosts();
+        if(posts == null || posts.size() == 0) {
+            throw new EntityNotFoundException();
+        } else {
+            return posts;
+        }
     }
 
     @GetMapping("/posts/{authorName}")
-    public List<Post> posts(@PathVariable(name = "authorName") String authorName) {
-        return this.postService.getAuthorPosts(authorName);
+    public List<Post> posts(@PathVariable(name = "authorName") String authorName) throws EntityNotFoundException {
+        List<Post> posts = this.postService.getAuthorPosts(authorName);
+        if(posts == null || posts.size() == 0) {
+            throw new EntityNotFoundException();
+        } else {
+            return posts;
+        }
     }
 }
